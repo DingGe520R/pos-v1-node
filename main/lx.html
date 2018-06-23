@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script >
+        var yang= [
+                {
+                    barcode: 'ITEM000000',
+                    name: '可口可乐',
+                    unit: '瓶',
+                    price: 3.00
+                },
+                {
+                    barcode: 'ITEM000001',
+                    name: '雪碧',
+                    unit: '瓶',
+                    price: 3.00
+                },
+                {
+                    barcode: 'ITEM000002',
+                    name: '苹果',
+                    unit: '斤',
+                    price: 5.50
+                },
+                {
+                    barcode: 'ITEM000003',
+                    name: '荔枝',
+                    unit: '斤',
+                    price: 15.00
+                },
+                {
+                    barcode: 'ITEM000004',
+                    name: '电池',
+                    unit: '个',
+                    price: 2.00
+                },
+                {
+                    barcode: 'ITEM000005',
+                    name: '方便面',
+                    unit: '袋',
+                    price: 4.50
+                }
+            ];
+       var inputs = [
+                'ITEM000001',
+                'ITEM000001',
+                'ITEM000001',
+                'ITEM000001',
+                'ITEM000001',
+                'ITEM000003-2',
+                'ITEM000005',
+                'ITEM000005',
+                'ITEM000005'
+            ];
+            var h={ };
+            for(let i in inputs){
+                if(inputs[i].length==10){
+                    let a= inputs[i];
+                    h[a]===undefined?h[a]=1:(h[a]++);
+                }
+                else{
+                    let zz= inputs[i].split('-');
+                    let a=zz[0];
+                    h[a]===undefined?h[a]=Number(zz[1]):h[a]++;
+                }
+               
+            }
+             console.log(h);
+             var classfiy=[];
+             for(let i in h){
+                 for(let j of yang){
+                     if(i==j.barcode){
+                      classfiy.push(
+                             {
+                                 barcode: j.barcode,
+                                 name: j.name,
+                                 count: h[i],
+                                 unit: j.unit,
+                                 price: j.price
+                             }
+                         )
+                            }
+                 }
+                
+             }
+             var b= [
+                    {
+                        type: 'BUY_TWO_GET_ONE_FREE',
+                        barcodes: [
+                            'ITEM000000',
+                            'ITEM000001',
+                            'ITEM000005'
+                        ]
+                    }
+                ];
+                var t=b[0].barcodes
+
+              console.log(classfiy);
+               console.log(t);
+        
+        function discount() {
+              
+                var dis=[];
+                var yuan=[];
+                for (let i of classfiy) {
+                    for (let j of t) {
+                       if (i.barcode === j && i.count >= 2) {
+                            dis.push({
+                                name: i.name,
+                                unit: i.unit,
+                                dsum: ((i.count - 1) * i.price).toFixed(2),
+                                count: i.count,
+                                sum: i.price *i.count
+
+                            })
+                        }
+                      
+                       } 
+            }
+            return dis;
+            
+            }
+  var dis=discount();
+    var sum = 0;
+    for (let i of classfiy) {
+        sum += i.price * i.count;
+    }
+       var dissum=0;
+       dissum=Number(dis[0].dsum)+ Number(dis[1].dsum) + Number(classfiy[1].price * classfiy[1].count);
+       var you = 0;
+       you= Number(sum) - Number(discount);
+    console.log(you);
+         
+        
+    </script>
+</body>
+</html>
